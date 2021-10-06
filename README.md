@@ -1,3 +1,3 @@
-#CS50AI
+# CS50AI
 
 This is CS50AI repository.
