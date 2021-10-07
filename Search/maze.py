@@ -4,6 +4,7 @@ import sys
 Implementation of maze solving.
 """
 
+
 class Node():
     """
     Class that is keeping track of the state, the parent and the action.
@@ -136,7 +137,7 @@ class Maze:
 
             # initialize frontier to just the starting position
             start = Node(state=self.start, parent=None, action=None)
-            frontier = StackFrontier()
+            frontier = StackFrontier()  # DFS uses a stack as its data structure
             frontier.add(start)
 
             # initialize an empty explored set
