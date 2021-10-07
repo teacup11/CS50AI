@@ -99,7 +99,7 @@ class Maze:
         if contents.count("A") != 1:
             raise Exception("Maze must have exactly one start point.")
         if contents.count("B") != 1:
-            raise Exception("Msze must have exactly one goal.")
+            raise Exception("Maze must have exactly one goal.")
 
         # determine the height and width of the maze
         contents = contents.splitlines()
