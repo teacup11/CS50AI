@@ -152,6 +152,8 @@ class Maze:
                 self.num_explored += 1
 
                 if node.state == self.goal:
+                    # if it is the goal, then we backtrack our way to figure out
+                    # what actions we took in order to get to this goal
                     actions = list()
                     cells = list()
                     while node.parent is not None:
