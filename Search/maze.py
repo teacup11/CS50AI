@@ -53,7 +53,7 @@ class StackFrontier():
             raise Exception("Empty frontier.")
         else:
             node = self.frontier[-1]  # stack frontier
-            self.frontier = self.frontier[:-1]  #update the frontier
+            self.frontier = self.frontier[:-1]  # update the frontier
             return node
 
     def contains_state(self, state):
@@ -191,9 +191,29 @@ class Maze:
 
             # add neighbors to frontier
             for action, state in self.neighbors(node.state):
+                # for each neighbor check, is the state already in the frontier?
+                # is the state already in the explored set?
                 if not frontier.contains_state(state) and state not in self.explored:
                     child = Node(state=state, parent=node, action=action)
                     frontier.add(child)
+
+    def print(self):
+        solution = self.solution[1] if self.solution is not None else None
+        print()
+        for i, row in enumerate(self.walls):
+            for j, col in enumerate(row):
+                if col:
+                    print("█", end="")
+                elif (i, j) == self.start:
+                    print("A", end="")
+                elif (i, j) == self.goal:
+                    print("B", end="")
+                elif solution is not None and (i, j) in solution:
+                    print("*", end="")
+                else:
+                    print(" ", end="")
+            print()
+        print()
 
 
 
