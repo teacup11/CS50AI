@@ -27,7 +27,7 @@ class StackFrontier():
         """
         Function that initially creates a frontier that is represented by an empty list.
         """
-        self.frontier = list() # ne štekam zdj če nismo dal parametra frontier v init
+        self.frontier = list()  # ne stekam zdj ce nismo dal parametra frontier v init
 
     def add(self, node):
         """
