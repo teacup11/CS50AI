@@ -197,13 +197,13 @@ class Maze:
                     child = Node(state=state, parent=node, action=action)
                     frontier.add(child)
 
-    def print(self):
+    def print1(self):
         solution = self.solution[1] if self.solution is not None else None
         print()
         for i, row in enumerate(self.walls):
             for j, col in enumerate(row):
                 if col:
-                    print("█", end="")
+                    print("#", end="")
                 elif (i, j) == self.start:
                     print("A", end="")
                 elif (i, j) == self.goal:
@@ -271,10 +271,10 @@ if len(sys.argv) != 2:
 
 m = Maze(sys.argv[1])
 print("Maze:")
-m.print()
+m.print1()
 print("Solving...")
 m.solve()
 print("States Explored:", m.num_explored)
 print("Solution:")
-m.print()
+m.print1()
 
