@@ -120,63 +120,77 @@ class Maze:
                     else:
                         # we have hit a wall
                         row.append(True)
-                except IndexError: #zhink about why would this happen
+                except IndexError:  # think about why would this happen
                     row.append(False)
             self.walls.append(row)
         self.solution = None
 
-        def solve(self):
-            """
-            Finds a solution to maze, if one exists.
-            :param self:
-            :return:
-            """
+    def neighbors(self, state):
+        row, col = state
+        candidates = [
+            ("up", (row - 1, col)),
+            ("down", (row + 1, col)),
+            ("left", (row, col - 1)),
+            ("right", (row, col + 1))
+        ]
+        result = []
+        for action, (r, c) in candidates:
+            if 0 <= r < self.height and 0 <= c < self.width and not self.walls[r][c]:
+                result.append((action, (r, c)))
+            return result
 
-            # keep track of number of states explored
-            self.num_explored = 0
+    def solve(self):
+        """
+        Finds a solution to maze, if one exists.
+        :param self:
+        :return:
+        """
 
-            # initialize frontier to just the starting position
-            start = Node(state=self.start, parent=None, action=None)
-            frontier = StackFrontier()  # DFS uses a stack as its data structure
-            frontier.add(start)  # initially this frontier just contains the start state
+        # keep track of number of states explored
+        self.num_explored = 0
 
-            # initialize an empty explored set
-            self.explored = set()
+        # initialize frontier to just the starting position
+        start = Node(state=self.start, parent=None, action=None)
+        frontier = StackFrontier()  # DFS uses a stack as its data structure
+        frontier.add(start)  # initially this frontier just contains the start state
 
-            while True:
-                if frontier.empty():
-                    raise Exception("no solution")
+        # initialize an empty explored set
+        self.explored = set()
 
-                # choose a node from the frontier
-                node = frontier.remove()
-                self.num_explored += 1
+        while True:
+            if frontier.empty():
+                raise Exception("no solution")
 
-                if node.state == self.goal:
-                    # if it is the goal, then we backtrack our way to figure out
-                    # what actions we took in order to get to this goal
-                    actions = list()
-                    cells = list()
+            # choose a node from the frontier
+            node = frontier.remove()
+            self.num_explored += 1
 
-                    # follow parent nodes to find solution
-                    while node.parent is not None: # loop until initial state, where there is no parent
-                        actions.append(node.action)
-                        cells.append(node.state)
-                        node = node.parent
+            if node.state == self.goal:
+                # if it is the goal, then we backtrack our way to figure out
+                # what actions we took in order to get to this goal
+                actions = list()
+                cells = list()
 
-                    # reverse it to get the sequence of actions from the initial state to the goal
-                    actions.reverse()
-                    cells.reverse()
-                    self.solution = (actions, cells)
-                    return
+                # follow parent nodes to find solution
+                while node.parent is not None: # loop until initial state, where there is no parent
+                    actions.append(node.action)
+                    cells.append(node.state)
+                    node = node.parent
 
-                # if it is not the goal just mark node as explored
-                self.explored.add(node.state)
+                # reverse it to get the sequence of actions from the initial state to the goal
+                actions.reverse()
+                cells.reverse()
+                self.solution = (actions, cells)
+                return
 
-                # add neighbors to frontier
-                for action, state in self.neigbors(node.state):
-                    if not frontier.contains_state(state) and state not in self.explored:
-                        child = Node(state=state, parent=node, action=action)
-                        frontier.add(child)
+            # if it is not the goal just mark node as explored
+            self.explored.add(node.state)
+
+            # add neighbors to frontier
+            for action, state in self.neigbors(node.state):
+                if not frontier.contains_state(state) and state not in self.explored:
+                    child = Node(state=state, parent=node, action=action)
+                    frontier.add(child)
 
 
 
