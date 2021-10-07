@@ -156,16 +156,20 @@ class Maze:
                     # what actions we took in order to get to this goal
                     actions = list()
                     cells = list()
-                    while node.parent is not None:
+
+                    # follow parent nodes to find solution
+                    while node.parent is not None: # loop until initial state, where there is no parent
                         actions.append(node.action)
                         cells.append(node.state)
                         node = node.parent
+
+                    # reverse it to get the sequence of actions from the initial state to the goal
                     actions.reverse()
                     cells.reverse()
                     self.solution = (actions, cells)
                     return
 
-                #mark node as explored
+                # if it is not the goal just mark node as explored
                 self.explored.add(node.state)
 
                 # add neighbors to frontier
