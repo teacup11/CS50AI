@@ -56,6 +56,9 @@ class StackFrontier():
             self.frontier = self.frontier[:-1]  #update the frontier
             return node
 
+    def contains_state(self, state):
+        return any(node.state == state for node in self.frontier)
+
 
 class QueueFrontier(StackFrontier):
     """
@@ -147,7 +150,7 @@ class Maze:
         """
 
         # keep track of number of states explored
-        self.num_explored = 0
+        self.num_explored = 0  # why is this not in __init__ ???
 
         # initialize frontier to just the starting position
         start = Node(state=self.start, parent=None, action=None)
@@ -155,7 +158,7 @@ class Maze:
         frontier.add(start)  # initially this frontier just contains the start state
 
         # initialize an empty explored set
-        self.explored = set()
+        self.explored = set()  # why is this not in __init__ ???
 
         while True:
             if frontier.empty():
@@ -187,7 +190,7 @@ class Maze:
             self.explored.add(node.state)
 
             # add neighbors to frontier
-            for action, state in self.neigbors(node.state):
+            for action, state in self.neighbors(node.state):
                 if not frontier.contains_state(state) and state not in self.explored:
                     child = Node(state=state, parent=node, action=action)
                     frontier.add(child)
