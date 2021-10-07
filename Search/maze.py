@@ -138,7 +138,7 @@ class Maze:
             # initialize frontier to just the starting position
             start = Node(state=self.start, parent=None, action=None)
             frontier = StackFrontier()  # DFS uses a stack as its data structure
-            frontier.add(start)
+            frontier.add(start)  # initially this frontier just contains the start state
 
             # initialize an empty explored set
             self.explored = set()
