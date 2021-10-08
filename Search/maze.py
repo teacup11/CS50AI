@@ -46,6 +46,7 @@ class StackFrontier():
 
     def remove(self):
         """
+        Stack frontier removal style.
         Remove a node from the frontier. Includes a safety net for the case of empty frontier.
         :return: node that we have removed
         """
@@ -76,7 +77,7 @@ class QueueFrontier(StackFrontier):
             raise Exception("empty frontier.")
         else:
             node = self.frontier[0]
-            self.frontier = self.frontier[1:] #updates the frontier
+            self.frontier = self.frontier[1:]  # updates the frontier
             return node
 
 
@@ -112,13 +113,13 @@ class Maze:
             row = []
             for j in range(self.width):
                 try:
-                    if contents[i][j] == 'A':
+                    if contents[i][j] == "A":
                         self.start = (i, j)
                         row.append(False)
-                    elif contents[i][j] == 'B':
+                    elif contents[i][j] == "B":
                         self.goal = (i, j)
                         row.append(False)
-                    elif contents[i][j] == ' ':
+                    elif contents[i][j] == " ":
                         row.append(False)
                     else:
                         # we have hit a wall
@@ -126,6 +127,7 @@ class Maze:
                 except IndexError:  # think about why would this happen
                     row.append(False)
             self.walls.append(row)
+
         self.solution = None
 
     def neighbors(self, state):
@@ -140,7 +142,7 @@ class Maze:
         for action, (r, c) in candidates:
             if 0 <= r < self.height and 0 <= c < self.width and not self.walls[r][c]:
                 result.append((action, (r, c)))
-            return result
+        return result
 
     def solve(self):
         """
@@ -160,7 +162,7 @@ class Maze:
         # initialize an empty explored set
         self.explored = set()  # why is this not in __init__ ???
 
-        while True:
+        while True:  # keeps looping until solution found
             if frontier.empty():
                 raise Exception("no solution")
 
@@ -175,7 +177,7 @@ class Maze:
                 cells = list()
 
                 # follow parent nodes to find solution
-                while node.parent is not None: # loop until initial state, where there is no parent
+                while node.parent is not None:  # loop until initial state, where there is no parent
                     actions.append(node.action)
                     cells.append(node.state)
                     node = node.parent
@@ -277,4 +279,4 @@ m.solve()
 print("States Explored:", m.num_explored)
 print("Solution:")
 m.print()
-
+m.output_image("maze.png", show_explored=True)
