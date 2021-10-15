@@ -1,7 +1,7 @@
 import csv
 import sys
 
-#from util import Node, StackFrontier, QueueFrontier
+from util import Node, StackFrontier, QueueFrontier
 
 # Maps names to a set of corresponding person_ids
 names = {}
@@ -91,12 +91,46 @@ def shortest_path(source, target):
 
     If no possible path, returns None.
     """
-    paths = list()  # a list of all paths
-    source_id = person_id_for_name(source)
-    target_id = person_id_for_name(target)
-    for source_id in people:
-        print(people[source_id])
-    return paths
+    num_explored = 0
+    all_paths = list()
+
+    start = Node(state=source, parent=None, action=None)
+    frontier = StackFrontier()
+    frontier.add(start)
+    start.explored = set()
+
+    if frontier.empty():
+        raise Exception("no solution")
+
+    node = frontier.remove()
+    num_explored += 1
+
+    if node.state == target:
+        actions = list()
+        cells = list()
+        while node.parent is not None:  # loop until initial state, where there is no parent
+            actions.append(node.action)
+            cells.append(node.state)
+            node = node.parent
+        actions.reverse()
+        cells.reverse()
+        start.solution = (actions, cells)
+        path = list(zip(actions, cells))
+        print(path)
+        all_paths.append(path)
+
+    start.explored.add(node.state)
+
+    for action, state in neighbors_for_person(node.state):
+        if state == target:
+            child = Node(state=state, parent=node, action=action)
+            frontier.add(child)
+            break
+        if not frontier.contains_state(state) and state not in start.explored:
+            child = Node(state=state, parent=node, action=action)
+            frontier.add(child)
+    print(all_paths)
+    return sorted(all_paths)[0]
 
 
 def person_id_for_name(name):
