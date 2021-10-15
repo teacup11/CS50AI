@@ -58,6 +58,11 @@ class StackFrontier():
             return node
 
     def contains_state(self, state):
+        """
+        #TODO
+        :param state:
+        :return: True if
+        """
         return any(node.state == state for node in self.frontier)
 
 
